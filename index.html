@@ -26,7 +26,6 @@ body{
   background:transparent;
 }
 
-/* Zone responsive */
 .widget{
   width:100%;
   height:100%;
@@ -35,23 +34,24 @@ body{
   justify-content:center;
 }
 
-/* Taille de référence du widget */
+/* Carte */
 .card{
   width:380px;
-  height:220px;
+  height:250px;
 
   flex-shrink:0;
 
-  padding:24px;
+  padding:20px 24px;
 
-  border:1px solid rgba(255,255,255,.78);
+  border:1px solid rgba(255,255,255,.85);
   border-radius:28px;
 
-  background:rgba(255,255,255,.42);
+  /* Rose très pâle */
+  background:rgba(255,245,249,.78);
 
   box-shadow:
     0 18px 50px rgba(155,91,118,.12),
-    inset 0 1px 0 rgba(255,255,255,.75);
+    inset 0 1px 0 rgba(255,255,255,.9);
 
   backdrop-filter:blur(14px);
   -webkit-backdrop-filter:blur(14px);
@@ -65,7 +65,7 @@ body{
   display:flex;
   justify-content:center;
   gap:8px;
-  margin-bottom:20px;
+  margin-bottom:16px;
   white-space:nowrap;
 }
 
@@ -75,7 +75,7 @@ button{
   font:inherit;
   color:#8c6072;
 
-  background:rgba(255,255,255,.55);
+  background:rgba(255,255,255,.65);
 
   padding:8px 13px;
   border-radius:999px;
@@ -85,7 +85,7 @@ button{
 
 button:hover{
   transform:translateY(-1px);
-  background:rgba(255,255,255,.82);
+  background:rgba(255,255,255,.9);
 }
 
 .mode.active{
@@ -110,7 +110,7 @@ button:hover{
 
   color:#8b5d70;
 
-  margin:10px 0 22px;
+  margin:8px 0 16px;
 }
 
 /* Barre */
@@ -120,11 +120,11 @@ button:hover{
 
   border-radius:99px;
 
-  background:rgba(255,255,255,.55);
+  background:rgba(255,255,255,.65);
 
   overflow:hidden;
 
-  margin-bottom:24px;
+  margin-bottom:18px;
 }
 
 .progress{
@@ -149,6 +149,7 @@ button:hover{
 .actions{
   display:flex;
   justify-content:center;
+  align-items:center;
   gap:10px;
 }
 
@@ -164,9 +165,43 @@ button:hover{
     0 8px 18px rgba(201,112,145,.22);
 }
 
+/* Empêche le hover de rendre le bouton illisible */
+.primary:hover{
+  background:#d993ad;
+  color:#fff;
+
+  transform:translateY(-1px);
+}
+
 .secondary{
   padding:11px 17px;
 }
+
+/* Responsive proportionnel */
+
+function resizeWidget(){
+  const availableWidth =
+    document.documentElement.clientWidth;
+
+  const availableHeight =
+    document.documentElement.clientHeight;
+
+  const scale =
+    Math.min(
+      availableWidth / 380,
+      availableHeight / 250
+    );
+
+  card.style.transform =
+    `scale(${scale})`;
+}
+
+window.addEventListener(
+  "resize",
+  resizeWidget
+);
+
+resizeWidget();
 </style>
 </head>
 
@@ -349,19 +384,19 @@ document
 
 function resizeWidget(){
 
-  const availableWidth=
+  const availableWidth =
     document.documentElement.clientWidth;
 
-  const availableHeight=
+  const availableHeight =
     document.documentElement.clientHeight;
 
-  const scale=
+  const scale =
     Math.min(
-      availableWidth/380,
-      availableHeight/220
+      availableWidth / 380,
+      availableHeight / 250
     );
 
-  card.style.transform=
+  card.style.transform =
     `scale(${scale})`;
 }
 
