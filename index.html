@@ -4,56 +4,82 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Soft Pink Pomodoro</title>
-<style>
-  *{box-sizing:border-box}
 
-html,body{
+<style>
+*{
+  box-sizing:border-box;
+}
+
+html,
+body{
   margin:0;
   width:100%;
   height:100%;
+  overflow:hidden;
   font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
 }
 
 body{
-  display:grid;
-  place-items:center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   background:transparent;
-  color:#7b5364;
-  padding:8px;
 }
 
-.card{
+/* Zone responsive */
+.widget{
   width:100%;
-  max-width:380px;
-  min-width:0;
-  padding:clamp(16px,5vw,24px);
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* Taille de référence du widget */
+.card{
+  width:380px;
+  height:220px;
+
+  flex-shrink:0;
+
+  padding:24px;
+
   border:1px solid rgba(255,255,255,.78);
-  border-radius:clamp(18px,5vw,28px);
+  border-radius:28px;
+
   background:rgba(255,255,255,.42);
+
   box-shadow:
     0 18px 50px rgba(155,91,118,.12),
     inset 0 1px 0 rgba(255,255,255,.75);
+
   backdrop-filter:blur(14px);
   -webkit-backdrop-filter:blur(14px);
+
+  transform-origin:center;
 }
+
+/* Modes */
 
 .modes{
   display:flex;
   justify-content:center;
-  gap:6px;
-  flex-wrap:wrap;
-  margin-bottom:clamp(14px,4vw,20px);
+  gap:8px;
+  margin-bottom:20px;
+  white-space:nowrap;
 }
 
 button{
   border:0;
   cursor:pointer;
   font:inherit;
-  font-size:clamp(11px,3vw,14px);
   color:#8c6072;
+
   background:rgba(255,255,255,.55);
-  padding:clamp(6px,2vw,8px) clamp(9px,3vw,13px);
+
+  padding:8px 13px;
   border-radius:999px;
+
   transition:.18s ease;
 }
 
@@ -65,75 +91,124 @@ button:hover{
 .mode.active{
   background:#eeb5c9;
   color:#fff;
-  box-shadow:0 5px 16px rgba(206,119,151,.22);
+
+  box-shadow:
+    0 5px 16px rgba(206,119,151,.22);
 }
+
+/* Timer */
 
 .time{
   text-align:center;
-  font-size:clamp(42px,14vw,64px);
+
+  font-size:64px;
   line-height:1;
+
   font-weight:650;
-  letter-spacing:clamp(-2px,-0.5vw,-3px);
+
+  letter-spacing:-3px;
+
   color:#8b5d70;
-  margin:clamp(8px,3vw,10px) 0 clamp(16px,4vw,22px);
+
+  margin:10px 0 22px;
 }
 
+/* Barre */
+
 .bar{
-  height:clamp(4px,1.5vw,6px);
+  height:6px;
+
   border-radius:99px;
+
   background:rgba(255,255,255,.55);
+
   overflow:hidden;
-  margin-bottom:clamp(16px,4vw,24px);
+
+  margin-bottom:24px;
 }
 
 .progress{
   height:100%;
   width:100%;
+
   transform-origin:left;
-  background:linear-gradient(90deg,#e7a4bc,#d98eaa);
+
+  background:linear-gradient(
+    90deg,
+    #e7a4bc,
+    #d98eaa
+  );
+
   border-radius:99px;
+
   transition:width .2s linear;
 }
+
+/* Boutons */
 
 .actions{
   display:flex;
   justify-content:center;
-  gap:8px;
+  gap:10px;
 }
 
 .primary{
   background:#d993ad;
   color:#fff;
-  padding:clamp(8px,2.5vw,11px) clamp(16px,5vw,23px);
-  min-width:80px;
-  box-shadow:0 8px 18px rgba(201,112,145,.22);
+
+  padding:11px 23px;
+
+  min-width:96px;
+
+  box-shadow:
+    0 8px 18px rgba(201,112,145,.22);
 }
 
 .secondary{
-  padding:clamp(8px,2.5vw,11px) clamp(13px,4vw,17px);
+  padding:11px 17px;
 }
 </style>
 </head>
 
 <body>
-<main class="card">
-  <div class="modes">
-    <button class="mode active" data-mode="focus">Focus</button>
-    <button class="mode" data-mode="short">Short Break</button>
-    <button class="mode" data-mode="long">Long Break</button>
-  </div>
 
-  <div id="time" class="time">25:00</div>
+<div class="widget">
+  <main class="card">
 
-  <div class="bar">
-    <div id="progress" class="progress"></div>
-  </div>
+    <div class="modes">
+      <button class="mode active" data-mode="focus">
+        Focus
+      </button>
 
-  <div class="actions">
-    <button id="start" class="primary">Start</button>
-    <button id="reset" class="secondary">Reset</button>
-  </div>
-</main>
+      <button class="mode" data-mode="short">
+        Short Break
+      </button>
+
+      <button class="mode" data-mode="long">
+        Long Break
+      </button>
+    </div>
+
+    <div id="time" class="time">
+      25:00
+    </div>
+
+    <div class="bar">
+      <div id="progress" class="progress"></div>
+    </div>
+
+    <div class="actions">
+      <button id="start" class="primary">
+        Start
+      </button>
+
+      <button id="reset" class="secondary">
+        Reset
+      </button>
+    </div>
+
+  </main>
+</div>
 
 <script>
 const durations={
@@ -142,18 +217,20 @@ const durations={
   long:15*60
 };
 
-let mode="focus",
-    remaining=durations[mode],
-    timer=null,
-    endAt=null;
+let mode="focus";
+let remaining=durations[mode];
+let timer=null;
+let endAt=null;
 
 const timeEl=document.getElementById("time");
 const progressEl=document.getElementById("progress");
 const startBtn=document.getElementById("start");
+const card=document.querySelector(".card");
 
 function render(){
-  const m=Math.floor(remaining/60),
-        s=remaining%60;
+
+  const m=Math.floor(remaining/60);
+  const s=remaining%60;
 
   timeEl.textContent=
     `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
@@ -161,12 +238,15 @@ function render(){
   progressEl.style.width=
     (remaining/durations[mode]*100)+"%";
 
-  startBtn.textContent=timer?"Pause":"Start";
+  startBtn.textContent=
+    timer ? "Pause" : "Start";
 
-  document.title=`${timeEl.textContent} — Pomodoro`;
+  document.title=
+    `${timeEl.textContent} — Pomodoro`;
 }
 
 function tick(){
+
   if(!endAt)return;
 
   remaining=Math.max(
@@ -175,10 +255,13 @@ function tick(){
   );
 
   if(remaining<=0){
+
     clearInterval(timer);
+
     timer=null;
     endAt=null;
     remaining=0;
+
     render();
 
     try{
@@ -194,8 +277,11 @@ function tick(){
 }
 
 function toggle(){
+
   if(timer){
+
     clearInterval(timer);
+
     timer=null;
 
     remaining=Math.max(
@@ -204,37 +290,89 @@ function toggle(){
     );
 
     endAt=null;
+
   }else{
-    endAt=Date.now()+remaining*1000;
-    timer=setInterval(tick,250);
+
+    endAt=
+      Date.now()+remaining*1000;
+
+    timer=
+      setInterval(tick,250);
   }
 
   render();
 }
 
 function reset(){
+
   clearInterval(timer);
+
   timer=null;
   endAt=null;
-  remaining=durations[mode];
+
+  remaining=
+    durations[mode];
+
   render();
 }
 
 document.querySelectorAll(".mode").forEach(btn=>{
+
   btn.onclick=()=>{
+
     mode=btn.dataset.mode;
 
-    document.querySelectorAll(".mode")
-      .forEach(x=>x.classList.toggle("active",x===btn));
+    document
+      .querySelectorAll(".mode")
+      .forEach(x=>
+        x.classList.toggle(
+          "active",
+          x===btn
+        )
+      );
 
     reset();
   };
+
 });
 
-document.getElementById("start").onclick=toggle;
-document.getElementById("reset").onclick=reset;
+document
+  .getElementById("start")
+  .onclick=toggle;
 
+document
+  .getElementById("reset")
+  .onclick=reset;
+
+
+/* Responsive proportionnel */
+
+function resizeWidget(){
+
+  const availableWidth=
+    document.documentElement.clientWidth;
+
+  const availableHeight=
+    document.documentElement.clientHeight;
+
+  const scale=
+    Math.min(
+      availableWidth/380,
+      availableHeight/220
+    );
+
+  card.style.transform=
+    `scale(${scale})`;
+}
+
+window.addEventListener(
+  "resize",
+  resizeWidget
+);
+
+resizeWidget();
 render();
 </script>
+
 </body>
 </html>
